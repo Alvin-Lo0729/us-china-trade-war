@@ -7,11 +7,34 @@ import { renderFishbone, renderCauses } from './fishbone.js';
 
 const $ = (id) => document.getElementById(id);
 const STATUS_TEXT = { todo: '待辦', doing: '進行中', done: '完成' };
+const darkQuery = matchMedia('(prefers-color-scheme: dark)');
+
+function currentTheme() {
+  return document.documentElement.dataset.theme || (darkQuery.matches ? 'dark' : 'light');
+}
+
+function setupThemeSwitch(onChange) {
+  const button = $('theme-switch');
+  const sync = () => button.setAttribute('aria-checked', String(currentTheme() === 'dark'));
+  sync();
+  button.addEventListener('click', () => {
+    const next = currentTheme() === 'dark' ? 'light' : 'dark';
+    document.documentElement.dataset.theme = next;
+    try { localStorage.setItem('theme', next); } catch {}
+    sync();
+    onChange();
+  });
+  darkQuery.addEventListener('change', () => {
+    if (document.documentElement.dataset.theme) return;
+    sync();
+    onChange();
+  });
+}
 
 function initMermaid() {
   const css = getComputedStyle(document.documentElement);
   const v = (name) => css.getPropertyValue(name).trim();
-  const dark = matchMedia('(prefers-color-scheme: dark)').matches;
+  const dark = currentTheme() === 'dark';
   mermaid.initialize({
     startOnLoad: false,
     securityLevel: 'strict',
@@ -167,9 +190,11 @@ function setupTabs(data) {
   };
   const rendered = new Set();
   const buttons = [...document.querySelectorAll('.tabs button')];
+  let current = 'overview';
 
   const show = (name) => {
     if (!renderers[name] && name !== 'overview') name = 'overview';
+    current = name;
     buttons.forEach((b) => b.setAttribute('aria-selected', String(b.dataset.tab === name)));
     document.querySelectorAll('.panel').forEach((p) => { p.hidden = p.id !== name; });
     if (renderers[name] && !rendered.has(name)) {
@@ -184,6 +209,13 @@ function setupTabs(data) {
   }));
   window.addEventListener('hashchange', () => show(location.hash.slice(1)));
   show(location.hash.slice(1) || 'overview');
+
+  // Mermaid 的配色在繪製當下寫死在 SVG 裡，換主題後要重畫；隱藏中的分頁等切換過去時再畫
+  return () => {
+    rendered.delete('gantt');
+    rendered.delete('mindmap');
+    show(current);
+  };
 }
 
 function showError(err) {
@@ -195,13 +227,18 @@ function showError(err) {
 
 async function main() {
   initMermaid();
+  let refreshCharts = () => {};
+  setupThemeSwitch(() => {
+    initMermaid();
+    refreshCharts();
+  });
   $('source').textContent = isGoogleSource() ? 'Google 試算表' : '本機範本（sheet-template/）';
   try {
     const data = await loadAll();
     const settings = Object.fromEntries(data.settings.map((r) => [r.key, r.value]));
     renderHeader(settings);
     renderOverview({ ...data, settings });
-    setupTabs(data);
+    refreshCharts = setupTabs(data);
     $('loaded-at').textContent = `更新時間 ${new Date().toLocaleString('zh-TW', { hour12: false })}`;
   } catch (err) {
     showError(err);

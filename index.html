@@ -3,6 +3,9 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script>
+    try { const t = localStorage.getItem('theme'); if (t) document.documentElement.dataset.theme = t; } catch {}
+  </script>
   <title>中美貿易戰｜專題進度</title>
   <meta name="description" content="歷史專題報告「中美貿易戰」的小組進度網站：準備時程、任務看板、大綱心智圖與成因魚骨圖。">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚖️</text></svg>">
@@ -17,7 +20,13 @@
   <header class="masthead">
     <div class="masthead-meta">
       <span>HISTORY REPORT · 歷史專題</span>
-      <span id="today"></span>
+      <span class="masthead-meta-right">
+        <span id="today"></span>
+        <button class="theme-switch" id="theme-switch" type="button" role="switch" aria-checked="false">
+          <span class="theme-switch-track" aria-hidden="true"><span class="theme-switch-thumb"></span></span>
+          <span>夜間模式</span>
+        </button>
+      </span>
     </div>
     <div class="masthead-main">
       <div class="masthead-title">
