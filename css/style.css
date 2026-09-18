@@ -66,6 +66,7 @@ main,
 
 .masthead-meta {
   display: flex;
+  flex-wrap: wrap;
   justify-content: space-between;
   gap: 12px;
   border-top: 4px solid var(--ink);
@@ -79,12 +80,15 @@ main,
 
 .masthead-main {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
   gap: 24px;
   padding: 22px 0 18px;
   border-bottom: 3px double var(--ink);
 }
+
+.masthead-meta span { white-space: nowrap; }
 
 .kicker {
   margin: 0;
