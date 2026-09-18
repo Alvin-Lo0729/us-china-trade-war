@@ -1,0 +1,8 @@
+key,value,說明
+title,中美貿易戰,網站大標題
+subtitle,從關稅戰到科技戰（1979–2026）,副標題
+report_date,2026-11-13,報告日期（格式 YYYY-MM-DD），用來計算倒數天數
+duration_min,45,報告總長度（分鐘）
+presenter,待定（可能由組長上台）,上台報告的人
+outline_url,https://github.com/Alvin-Lo0729/us-china-trade-war/blob/main/docs/outline.md,完整大綱文件連結
+sheet_url,,Google 試算表的編輯連結（留空就不顯示按鈕）

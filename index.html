@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>中美貿易戰｜專題進度</title>
+  <meta name="description" content="歷史專題報告「中美貿易戰」的小組進度網站：準備時程、任務看板、大綱心智圖與成因魚骨圖。">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚖️</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=Noto+Sans+TC:wght@400;500;700&family=Noto+Serif+TC:wght@600;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+  <script type="module" src="js/app.js"></script>
+</head>
+<body>
+  <header class="masthead">
+    <div class="masthead-meta">
+      <span>HISTORY REPORT · 歷史專題</span>
+      <span id="today"></span>
+    </div>
+    <div class="masthead-main">
+      <div class="masthead-title">
+        <p class="kicker">小組進度看板</p>
+        <h1 id="title">中美貿易戰</h1>
+        <p class="subtitle" id="subtitle"></p>
+      </div>
+      <div class="stamp" aria-label="距離報告日">
+        <span class="stamp-top">REPORT DAY</span>
+        <span class="stamp-count" id="countdown">D-?</span>
+        <span class="stamp-date" id="report-date"></span>
+      </div>
+    </div>
+  </header>
+
+  <nav class="tabs" role="tablist" aria-label="頁面切換">
+    <button role="tab" data-tab="overview">總覽</button>
+    <button role="tab" data-tab="gantt">準備時程</button>
+    <button role="tab" data-tab="kanban">任務看板</button>
+    <button role="tab" data-tab="mindmap">大綱心智圖</button>
+    <button role="tab" data-tab="fishbone">成因魚骨圖</button>
+  </nav>
+
+  <main>
+    <p class="load-error" id="load-error" hidden></p>
+
+    <section class="panel" id="overview" role="tabpanel">
+      <div class="stats">
+        <div class="stat stat-progress">
+          <span class="stat-label">整體完成度</span>
+          <span class="stat-big"><b id="pct">0</b><small>%</small></span>
+          <div class="meter"><i id="pct-bar"></i></div>
+          <span class="stat-note" id="task-count"></span>
+        </div>
+        <div class="stat">
+          <span class="stat-label">下一個截止</span>
+          <div id="next-due" class="next-due"></div>
+        </div>
+        <div class="stat">
+          <span class="stat-label">報告人</span>
+          <div id="presenter" class="stat-text"></div>
+          <div class="links" id="links"></div>
+        </div>
+      </div>
+
+      <h2 class="section-title">報告流程 <small id="duration"></small></h2>
+      <div class="runsheet">
+        <div class="runsheet-strip" id="runsheet-strip"></div>
+        <ol class="runsheet-list" id="runsheet-list"></ol>
+      </div>
+
+      <h2 class="section-title">組員分工</h2>
+      <div class="table-wrap">
+        <table class="members">
+          <thead><tr><th>角色</th><th>暱稱</th><th>負責內容</th><th>任務進度</th></tr></thead>
+          <tbody id="members"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="panel" id="gantt" role="tabpanel" hidden>
+      <h2 class="section-title">準備時程 <small>甘特圖 · 依負責人分組</small></h2>
+      <ul class="legend">
+        <li><i class="dot todo"></i>待辦</li>
+        <li><i class="dot doing"></i>進行中</li>
+        <li><i class="dot done"></i>完成</li>
+        <li><i class="dot late"></i>逾期未完成</li>
+        <li><i class="dot today"></i>今天</li>
+      </ul>
+      <div class="chart-scroll"><div class="chart chart-gantt" id="gantt-chart"></div></div>
+    </section>
+
+    <section class="panel" id="kanban" role="tabpanel" hidden>
+      <h2 class="section-title">任務看板 <small>與甘特圖共用同一份任務資料</small></h2>
+      <div class="kanban" id="kanban-board"></div>
+    </section>
+
+    <section class="panel" id="mindmap" role="tabpanel" hidden>
+      <h2 class="section-title">大綱心智圖 <small>節點顏色代表完成狀態</small></h2>
+      <ul class="legend">
+        <li><i class="dot todo"></i>待辦</li>
+        <li><i class="dot doing"></i>進行中</li>
+        <li><i class="dot done"></i>完成</li>
+      </ul>
+      <div class="chart-scroll"><div class="chart chart-mindmap" id="mindmap-chart"></div></div>
+    </section>
+
+    <section class="panel" id="fishbone" role="tabpanel" hidden>
+      <h2 class="section-title">成因魚骨圖 <small>貿易戰為什麼會爆發？</small></h2>
+      <div class="chart-scroll"><div class="chart chart-fishbone" id="fishbone-chart"></div></div>
+      <div class="table-wrap">
+        <table class="causes">
+          <thead><tr><th>類別</th><th>原因</th><th>說明</th><th>出處</th></tr></thead>
+          <tbody id="causes"></tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <footer class="colophon">
+    <span>資料來源：<b id="source"></b></span>
+    <span id="loaded-at"></span>
+  </footer>
+</body>
+</html>
