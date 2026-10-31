@@ -1,0 +1,688 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>線性代數期中題庫</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;700&family=Noto+Sans+TC:wght@400;500;700&family=Noto+Serif+TC:wght@600;700&display=swap">
+<style>
+/* Layout: one exam-sheet column on graph paper; question cards, a results sheet on submit, and a fixed progress bar at the bottom. */
+:root{
+  --paper:#F4F6F8; --card:#FFFFFF; --ink:#17212B; --muted:#5A6774; --line:#D9E0E6;
+  --accent:#2A5CA6; --accent-soft:#E5EDF8; --grid:rgba(42,92,166,.075);
+  --ok:#1C7A4C; --ok-soft:#E2F2E9; --bad:#B42A20; --bad-soft:#FBE8E5; --warn:#865800; --warn-soft:#FFF1D2;
+  --f-display:"Noto Serif TC","Songti TC","PMingLiU",serif;
+  --f-body:"Noto Sans TC","PingFang TC","Microsoft JhengHei",system-ui,sans-serif;
+  --f-mono:"JetBrains Mono",ui-monospace,"SFMono-Regular",Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --paper:#0F151B; --card:#17202A; --ink:#E4EAF0; --muted:#98A6B3; --line:#2A3642;
+  --accent:#86ACE9; --accent-soft:#1C2A3D; --grid:rgba(134,172,233,.07);
+  --ok:#5FC690; --ok-soft:#14301F; --bad:#F2887E; --bad-soft:#3A1A18; --warn:#E8B95C; --warn-soft:#33270F; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --paper:#0F151B; --card:#17202A; --ink:#E4EAF0; --muted:#98A6B3; --line:#2A3642;
+  --accent:#86ACE9; --accent-soft:#1C2A3D; --grid:rgba(134,172,233,.07);
+  --ok:#5FC690; --ok-soft:#14301F; --bad:#F2887E; --bad-soft:#3A1A18; --warn:#E8B95C; --warn-soft:#33270F; color-scheme:dark}
+
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{background:var(--paper);color:var(--ink);font-family:var(--f-body);font-size:16px;line-height:1.7;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));
+  padding-block:0 120px;
+  background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+  background-size:24px 24px}
+.wrap{max-width:820px;margin:0 auto;display:flex;flex-direction:column;gap:20px}
+mjx-container{color:inherit}
+mjx-container[display="true"]{margin:.6em 0!important;overflow-x:auto;overflow-y:hidden;max-width:100%}
+
+header.top{padding-block:36px 4px;display:flex;flex-direction:column;gap:10px}
+.eyebrow{font-family:var(--f-mono);font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--accent)}
+h1{font-family:var(--f-display);font-weight:700;font-size:clamp(28px,6vw,40px);line-height:1.2;margin:0;text-wrap:balance}
+.lede{color:var(--muted);margin:0;max-width:62ch}
+.lede b{color:var(--ink);font-weight:500}
+.facts{display:flex;flex-wrap:wrap;gap:8px 18px;font-family:var(--f-mono);font-size:13px;color:var(--muted)}
+.facts span b{color:var(--ink)}
+.controls{display:flex;flex-wrap:wrap;gap:8px;padding-top:6px}
+button{font:inherit;cursor:pointer}
+.btn{font-size:14px;padding:7px 14px;border-radius:8px;border:1px solid var(--line);background:var(--card);color:var(--ink)}
+.btn:hover{border-color:var(--accent)}
+.btn[aria-pressed="true"]{background:var(--accent-soft);border-color:var(--accent);color:var(--accent)}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--card);font-weight:700}
+.btn:focus-visible,.opt input:focus-visible+.key,.chip:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+/* results */
+#result{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:22px;display:flex;flex-direction:column;gap:16px}
+.score-row{display:flex;flex-wrap:wrap;align-items:flex-end;gap:12px 28px}
+.score{font-family:var(--f-mono);font-weight:700;font-size:56px;line-height:1;font-variant-numeric:tabular-nums}
+.score small{font-size:18px;color:var(--muted);font-weight:500;margin-left:4px}
+.tally{display:flex;gap:18px;flex-wrap:wrap;font-variant-numeric:tabular-nums}
+.tally div{display:flex;flex-direction:column;line-height:1.3}
+.tally b{font-family:var(--f-mono);font-size:22px}
+.tally span{font-size:13px;color:var(--muted)}
+.t-ok b{color:var(--ok)} .t-bad b{color:var(--bad)} .t-skip b{color:var(--warn)}
+.res-label{font-size:13px;color:var(--muted);margin:0 0 6px}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{font-family:var(--f-mono);font-size:13px;padding:3px 10px;border-radius:999px;border:1px solid var(--bad);color:var(--bad);background:var(--bad-soft)}
+.chip.skip{border-color:var(--warn);color:var(--warn);background:var(--warn-soft)}
+.res-actions{display:flex;flex-wrap:wrap;gap:8px}
+.note{font-size:13px;color:var(--muted);margin:0}
+
+/* sections & cards */
+.sec-h{font-family:var(--f-display);font-weight:600;font-size:20px;margin:18px 0 0;display:flex;align-items:baseline;gap:10px}
+.sec-h span{font-family:var(--f-mono);font-size:12px;color:var(--muted);font-weight:500}
+#list{display:flex;flex-direction:column;gap:16px}
+.q{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:18px 20px;display:flex;flex-direction:column;gap:12px;min-width:0;scroll-margin-top:16px}
+.q.st-ok{border-color:color-mix(in srgb,var(--ok) 45%,var(--line))}
+.q.st-bad{border-color:color-mix(in srgb,var(--bad) 45%,var(--line))}
+.q.st-skip{border-color:color-mix(in srgb,var(--warn) 45%,var(--line))}
+.qh{display:flex;align-items:center;flex-wrap:wrap;gap:8px}
+.qn{font-family:var(--f-mono);font-weight:700;font-size:14px}
+.tag{font-size:12px;padding:1px 8px;border-radius:999px;background:var(--accent-soft);color:var(--accent);letter-spacing:.04em}
+.tag.multi{background:var(--warn-soft);color:var(--warn)}
+.topic{font-size:12px;color:var(--muted)}
+.status{margin-left:auto;font-size:12px;font-weight:700;padding:1px 9px;border-radius:999px}
+.status:empty{display:none}
+.st-ok .status{background:var(--ok-soft);color:var(--ok)}
+.st-bad .status{background:var(--bad-soft);color:var(--bad)}
+.st-skip .status{background:var(--warn-soft);color:var(--warn)}
+.status.peek{background:var(--accent-soft);color:var(--accent)}
+.stem{min-width:0;overflow-x:auto}
+.stem p{margin:0}
+.opts{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.opts.wide{grid-template-columns:1fr}
+@media (max-width:560px){.opts{grid-template-columns:1fr}}
+.opt{display:flex;align-items:center;gap:10px;padding:8px 12px;border:1px solid var(--line);border-radius:8px;cursor:pointer;min-width:0;overflow-x:auto;position:relative}
+.opt:hover{border-color:var(--accent)}
+.opt input{position:absolute;opacity:0;pointer-events:none}
+.key{flex:none;font-family:var(--f-mono);font-size:13px;font-weight:700;width:30px;height:26px;display:grid;place-items:center;border:1px solid var(--line);border-radius:6px;color:var(--muted)}
+.multi-q .key{border-radius:6px}
+.opt:has(input:checked){border-color:var(--accent);background:var(--accent-soft)}
+.opt:has(input:checked) .key{background:var(--accent);border-color:var(--accent);color:var(--card)}
+.q .opt.is-correct{border-color:var(--ok);background:var(--ok-soft)}
+.q .opt.is-correct .key{background:var(--ok);border-color:var(--ok);color:var(--card)}
+.q .opt.is-wrong{border-color:var(--bad);background:var(--bad-soft)}
+.q .opt.is-wrong .key{background:var(--bad);border-color:var(--bad);color:var(--card)}
+.q .opt.is-missed{border-style:dashed}
+.locked .opt{cursor:default}
+.locked .opt:hover{border-color:inherit}
+.ot{min-width:0}
+.qf{display:flex;justify-content:flex-start}
+.reveal{font-size:14px;padding:4px 0;border:0;background:none;color:var(--accent);font-weight:500}
+.reveal:hover{text-decoration:underline}
+.whyline{border-radius:8px;background:var(--bad-soft);padding:10px 14px;font-size:15px;display:flex;flex-direction:column;gap:4px}
+.whyline b{color:var(--bad)}
+.sol{border-top:1px dashed var(--line);padding-top:12px;display:flex;flex-direction:column;gap:8px;min-width:0}
+.sol .ans{font-weight:700;color:var(--ok)}
+.sol p,.sol ul,.sol ol{margin:0}
+.sol ul,.sol ol{padding-left:1.3em;display:flex;flex-direction:column;gap:4px}
+.sol .tip{font-size:14px;color:var(--muted)}
+.sol .math-scroll{overflow-x:auto}
+
+/* bottom bar */
+.bar{position:fixed;left:0;right:0;bottom:0;z-index:20;background:color-mix(in srgb,var(--card) 94%,transparent);backdrop-filter:blur(6px);border-top:1px solid var(--line);
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:10px calc(10px + env(safe-area-inset-bottom,0px))}
+.bar-in{max-width:820px;margin:0 auto;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.prog{flex:1 1 180px;display:flex;flex-direction:column;gap:4px;min-width:0}
+.prog-t{font-size:13px;color:var(--muted);font-variant-numeric:tabular-nums}
+.prog-t b{color:var(--ink);font-family:var(--f-mono)}
+.track{height:6px;border-radius:99px;background:var(--line);overflow:hidden}
+.fill{height:100%;width:0;background:var(--accent);transition:width .25s}
+.confirm{display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-size:14px}
+@media (prefers-reduced-motion:reduce){.fill{transition:none}}
+</style>
+
+<div class="wrap">
+  <header class="top">
+    <div class="eyebrow">Linear Algebra · Midterm Bank</div>
+    <h1>線性代數期中題庫</h1>
+    <p class="lede">從同學拍下的考卷整理出的 <b>26 種不同題目</b>（題庫共 30 題，尚缺 4 題）。作答後按「交卷」計分，答錯的題目會自動展開詳解；也可以隨時按題目下方的「顯示解答」。</p>
+    <div class="facts">
+      <span>題數 <b>26</b></span><span>單選 <b>22</b></span><span>複選 <b>4</b></span><span>每題 <b>3.85</b> 分</span><span>複選需全對才給分</span>
+    </div>
+    <div class="controls">
+      <button class="btn" id="btn-shuffle" aria-pressed="false">隨機題序</button>
+      <button class="btn" id="btn-all" aria-pressed="false">顯示全部解答</button>
+      <button class="btn" id="btn-reset">重新作答</button>
+    </div>
+  </header>
+
+  <section id="result" hidden aria-live="polite"></section>
+
+  <main id="list"></main>
+</div>
+
+<div class="bar">
+  <div class="bar-in">
+    <div class="prog">
+      <div class="prog-t" id="prog-t">已作答 <b>0</b> / 26</div>
+      <div class="track"><div class="fill" id="fill"></div></div>
+    </div>
+    <div class="confirm" id="confirm" hidden></div>
+    <button class="btn primary" id="btn-submit">交卷</button>
+  </div>
+</div>
+
+<script>
+window.MathJax = {
+  tex: { inlineMath: [['\\(', '\\)']], displayMath: [['\\[', '\\]']] },
+  svg: { fontCache: 'global' },
+  options: { enableMenu: false }
+};
+</script>
+<script>
+(function(){
+const R = String.raw;
+const m = s => '\\begin{bmatrix}' + s.split(';').map(r => r.trim().split(/\s+/).join('&')).join('\\\\') + '\\end{bmatrix}';
+const aug = s => { const rows = s.split(';').map(r => r.trim().split(/\s+/)); const n = rows[0].length;
+  return '\\left[\\begin{array}{' + 'c'.repeat(n - 1) + '|c}' + rows.map(r => r.join('&')).join('\\\\') + '\\end{array}\\right]'; };
+const im = s => '\\(' + m(s) + '\\)';
+const KEYS = ['a', 'b', 'c', 'd'];
+
+const SECTIONS = [
+  { id: 'A', name: '一、線性方程式與方程組' },
+  { id: 'B', name: '二、列梯形形式' },
+  { id: 'C', name: '三、矩陣運算' },
+  { id: 'D', name: '四、反矩陣與基本矩陣' }
+];
+
+const MA = m('1 2 -1 4;0 1 0 3;0 0 1 -2');
+const MB = m('1 -5 2 -1 3;0 0 1 3 -2;0 0 0 1 4;0 0 0 0 1');
+const MC = m('1 2 -3 4;0 2 1 -1;0 0 1 -3');
+const MD = m('1 0 0 -1;0 1 0 2;0 0 1 3;0 0 0 0');
+const echelonOpts = [MA, MB, MC, MD].map(x => '\\(' + x + '\\)');
+
+const QS = [
+/* ---------- A ---------- */
+{ sec:'A', topic:'線性方程式的定義', type:'multi',
+  stem: R`<p>下列哪幾項是變數 \(x\) 與 \(y\) 的線性方程式？（複選）</p>`,
+  opts: [R`\(2xy-6y=0\)`, R`\(e^{-2}x+5y=8\)`, R`\(\dfrac{x}{2}-\dfrac{y}{4}=0\)`, R`\(x^{-2}+2y^{-2}=6\)`],
+  ans: [1,2],
+  sol: R`<p>線性方程式的形式是 \(a_1x+a_2y=b\)：係數 \(a_1,a_2,b\) 都是<b>常數</b>，變數只能是<b>一次方</b>，不能互相相乘，也不能被包在其他函數（\(\sin\)、\(e^x\)、根號…）裡。</p>
+  <ul><li>(a) 含 \(xy\) 項，兩個變數相乘 → 非線性。</li>
+  <li>(b) \(e^{-2}\approx 0.135\) 只是常數係數，等於 \(0.135x+5y=8\) → <b>線性</b>。</li>
+  <li>(c) 即 \(\tfrac12x-\tfrac14y=0\) → <b>線性</b>。</li>
+  <li>(d) \(x^{-2}=\tfrac{1}{x^2}\)，變數是負二次方 → 非線性。</li></ul>`,
+  why: {0:R`\(xy\) 是兩個變數相乘，屬於二次項。`, 3:R`\(x^{-2}\) 是負次方，不是一次方。`} },
+
+{ sec:'A', topic:'線性方程式的定義', type:'multi',
+  stem: R`<p>下列哪幾項是變數 \(x\) 與 \(y\) 的線性方程式？（複選）</p>`,
+  opts: [R`\(3xy-4x=0\)`, R`\(2\sin(x)-y=14\)`, R`\(x+\sin(3)\,y=8\)`, R`\(2x-3y=4\)`],
+  ans: [2,3],
+  sol: R`<p>判斷重點：<b>變數</b>有沒有被乘在一起、或被包進函數裡；常數被包進函數則沒關係。</p>
+  <ul><li>(a) 含 \(xy\) 項 → 非線性。</li>
+  <li>(b) 變數 \(x\) 在 \(\sin\) 裡面 → 非線性。</li>
+  <li>(c) \(\sin(3)\approx 0.141\) 是一個固定的數字，\(x\)、\(y\) 都是一次 → <b>線性</b>。</li>
+  <li>(d) 標準的線性方程式 → <b>線性</b>。</li></ul>
+  <p class="tip">易錯：(b) 和 (c) 長得很像，差別在 \(\sin\) 裡放的是變數 \(x\) 還是常數 \(3\)。</p>`,
+  why: {0:R`\(xy\) 是兩個變數相乘。`, 1:R`變數 \(x\) 被放進 \(\sin\) 函數裡，不是一次項。`} },
+
+{ sec:'A', topic:'等價方程組', type:'single',
+  stem: R`<p>若一個線性方程式系統經過一連串的基本列運算之後，則和原來的線性方程式系統等價嗎？</p>`,
+  opts: ['對，等價', '不對，不等價', '不一定', '以上皆非'],
+  ans: [0],
+  sol: R`<p>三種基本列運算：</p>
+  <ol><li>交換兩列</li><li>某一列乘上<b>非零</b>常數</li><li>某一列的倍數加到另一列</li></ol>
+  <p>每一種都能用另一個基本列運算還原（換回來、乘 \(\tfrac1c\)、再減回去），所以運算前後的方程組解集合完全相同，稱為<b>等價</b>。這就是高斯消去法能拿來解方程組的原因。</p>`,
+  why: {1:'基本列運算不會改變解集合。', 2:'「乘上 0」不算基本列運算，所以不會出現改變解的情況。'} },
+
+{ sec:'A', topic:'二元一次方程組', type:'single',
+  stem: R`<p>解下列聯立方程式</p>\[\begin{cases} x-y=6\\ 2x+y=-6\end{cases}\]`,
+  opts: ['\\((0,-6)\\)', '\\((1,-5)\\)', '\\((-1,-1)\\)', '\\((1,-1)\\)'],
+  ans: [0],
+  sol: R`<p>兩式相加消去 \(y\)：\(3x=0\Rightarrow x=0\)。</p><p>代回 \(x-y=6\)：\(y=-6\)。</p><p>驗算：\(2(0)+(-6)=-6\) ✓</p>`,
+  why: {1:R`代入第二式：\(2(1)+(-5)=-3\neq-6\)。`, 2:R`代入第一式：\(-1-(-1)=0\neq6\)。`, 3:R`代入第一式：\(1-(-1)=2\neq6\)。`} },
+
+{ sec:'A', topic:'二元一次方程組', type:'single',
+  stem: R`<p>解下列聯立方程式</p>\[\begin{cases} -x-2y=-13\\ -4x+2y=2\end{cases}\]`,
+  opts: [R`\(\left(\tfrac{11}{5},\tfrac{27}{5}\right)\)`, R`\(\left(\tfrac{27}{5},\tfrac{11}{5}\right)\)`, R`\(\left(-\tfrac{27}{5},-\tfrac{11}{5}\right)\)`, R`\(\left(a,\tfrac{26-2a}{5}\right)\)，\(a\) 為任意實數`],
+  ans: [0],
+  sol: R`<p>兩式相加消去 \(y\)：\(-5x=-11\Rightarrow x=\tfrac{11}{5}\)。</p>
+  <p>代回第一式：\(-\tfrac{11}{5}-2y=-13\Rightarrow -2y=-\tfrac{54}{5}\Rightarrow y=\tfrac{27}{5}\)。</p>
+  <p>驗算第二式：\(-\tfrac{44}{5}+\tfrac{54}{5}=\tfrac{10}{5}=2\) ✓</p>
+  <p class="tip">兩條直線斜率分別是 \(-\tfrac12\) 與 \(2\)，不平行，所以恰好只有一組解。</p>`,
+  why: {1:'把 x、y 的值對調了。', 2:'正負號錯，而且 x、y 對調。', 3:'兩直線斜率不同，只交於一點，不會有無限多組解。'} },
+
+{ sec:'A', topic:'解的個數', type:'single',
+  stem: R`<p>解下列聯立方程式</p>\[\begin{cases} 3x-y=5\\ 6x-2y=10\end{cases}\]`,
+  opts: ['\\((3,-3)\\)', '\\((5,-5)\\)', '無解', '無限多組解'],
+  ans: [3],
+  sol: R`<p>第二式正好是第一式 \(\times 2\)（係數與常數項都成比例），兩條方程式是<b>同一條直線</b>。</p>
+  <p>消去後得 \(0=0\)，只剩 \(3x-y=5\)。令 \(x=t\)，則 \(y=3t-5\)，解為 \((t,\,3t-5)\)，\(t\) 為任意實數 → <b>無限多組解</b>。</p>
+  <p class="tip">對照：若係數成比例但常數項不成比例（例如 \(6x-2y=11\)），兩直線平行，才是無解。</p>`,
+  why: {0:R`\(3(3)-(-3)=12\neq5\)，不是解。`, 1:R`\(3(5)-(-5)=20\neq5\)，不是解。`, 2:'常數項也成比例，是重合直線，不是平行線。'} },
+
+{ sec:'A', topic:'三元一次方程組', type:'single',
+  stem: R`<p>解下列聯立方程式</p>\[\begin{aligned} x-2y+3z&=9\\ -x+3y&=-4\\ 2x-5y+5z&=17\end{aligned}\]`,
+  opts: ['\\((1,-1,2)\\)', '\\((2,-1,1)\\)', '\\((-1,1,2)\\)', '\\((2,1,-1)\\)'],
+  ans: [0],
+  sol: R`<p>高斯消去：</p>
+  <ul><li>① + ②：\(y+3z=5\)</li><li>③ − 2×①：\(-y-z=-1\)</li>
+  <li>兩式相加：\(2z=4\Rightarrow z=2\)，\(y=5-3(2)=-1\)</li>
+  <li>代回①：\(x=9+2y-3z=9-2-6=1\)</li></ul>
+  <p>驗算：\(1+2+6=9\)、\(-1-3=-4\)、\(2+5+10=17\) ✓</p>`,
+  why: {1:R`代入②：\(-2+3(-1)=-5\neq-4\)。`, 2:R`代入①：\(-1-2+6=3\neq9\)。`, 3:R`代入①：\(2-2-3=-3\neq9\)。`} },
+
+{ sec:'A', topic:'三元一次方程組', type:'single',
+  stem: R`<p>解下列聯立方程式</p>\[\begin{cases} x+y+z=-6\\ x-6y-7z=-29\\ -7y-5z=4\end{cases}\]`,
+  opts: ['\\((9,-7,-8)\\)', '\\((-7,-8,9)\\)', '\\((-8,-7,9)\\)', '\\((-7,-6,10)\\)'],
+  ans: [2],
+  sol: R`<ul><li>① − ②：\(7y+8z=23\)</li><li>與 ③ \(-7y-5z=4\) 相加：\(3z=27\Rightarrow z=9\)</li>
+  <li>\(-7y=4+45\Rightarrow y=-7\)</li><li>\(x=-6-y-z=-6+7-9=-8\)</li></ul>
+  <p class="tip">快速篩選：四個選項都滿足第一式，直接用第三式 \(-7y-5z=4\) 代入檢查就能選出 (c)。</p>`,
+  why: {0:R`代入③：\(-7(-7)-5(-8)=89\neq4\)。`, 1:R`代入③：\(-7(-8)-5(9)=11\neq4\)。`, 3:R`代入③：\(-7(-6)-5(10)=-8\neq4\)。`} },
+
+{ sec:'A', topic:'增廣矩陣', type:'single',
+  stem: R`<p>給定的矩陣是表示線性方程組的增廣矩陣，求系統的解。</p>\[${aug('1 2 5 -9;2 -2 4 -6;0 1 -3 6')}\]`,
+  opts: [R`\(x=2,\ y=3,\ z=-6\)`, R`\(x=1,\ y=3,\ z=-2\)`, R`\(x=2,\ y=0,\ z=-2\)`, R`\(x=1,\ y=0,\ z=-2\)`],
+  ans: [3],
+  sol: R`<p>對應方程組：\(x+2y+5z=-9\)、\(2x-2y+4z=-6\)、\(y-3z=6\)。</p>
+  <ul><li>\(R_2-2R_1\)：\([\,0\ \ -6\ \ -6\mid 12\,]\)，除以 \(-6\) 得 \(y+z=-2\)</li>
+  <li>與 \(y-3z=6\) 相減：\(4z=-8\Rightarrow z=-2\)，\(y=0\)</li>
+  <li>\(x=-9-2(0)-5(-2)=1\)</li></ul>
+  <p>驗算：\(1+0-10=-9\)、\(2-0-8=-6\)、\(0+6=6\) ✓</p>`,
+  why: {0:R`代入第三式：\(3-3(-6)=21\neq6\)。`, 1:R`代入第三式：\(3-3(-2)=9\neq6\)。`, 2:R`代入第一式：\(2+0-10=-8\neq-9\)。`} },
+
+{ sec:'A', topic:'應用：多項式插值', type:'single',
+  stem: R`<p>求拋物線方程 \(y=ax^2+bx+c\)，已知通過下列 3 點 \((0,-4)\)、\((1,-2)\)、\((2,2)\)。</p>`,
+  opts: [R`\(y=x^2-x+4\)`, R`\(y=x^2+x+4\)`, R`\(y=2x^2+x-4\)`, R`\(y=x^2+x-4\)`],
+  ans: [3],
+  sol: R`<p>代入三點得方程組：</p>\[\begin{cases} c=-4\\ a+b+c=-2\\ 4a+2b+c=2\end{cases}\]
+  <p>得 \(a+b=2\)、\(4a+2b=6\Rightarrow 2a+b=3\)，相減得 \(a=1\)、\(b=1\)。</p>
+  <p>所以 \(y=x^2+x-4\)。驗算 \(x=2\)：\(4+2-4=2\) ✓</p>`,
+  why: {0:R`代 \(x=0\) 得 \(4\)，不是 \(-4\)。`, 1:R`代 \(x=0\) 得 \(4\)，不是 \(-4\)。`, 2:R`代 \(x=1\) 得 \(2+1-4=-1\neq-2\)。`} },
+
+{ sec:'A', topic:'應用：多項式插值', type:'single',
+  stem: R`<p>當 \(x=1,2,3\) 和 \(4\) 時，此多項式函數 \(p(x)=a_0+a_1x+a_2x^2+a_3x^3\) 會等於 0，請求出 \(a_0,a_1,a_2\) 和 \(a_3\) 為多少？即求出 \((a_0,a_1,a_2,a_3)=\,?\)</p>`,
+  opts: ['\\((0,0,0,0)\\)', '\\((1,1,-1,-1)\\)', '\\((1,1,0,0)\\)', '\\((1,0,1,0)\\)'],
+  ans: [0],
+  sol: R`<p>代入四個 \(x\) 值得齊次方程組：</p>
+  \[\begin{bmatrix}1&1&1&1\\1&2&4&8\\1&3&9&27\\1&4&16&64\end{bmatrix}\begin{bmatrix}a_0\\a_1\\a_2\\a_3\end{bmatrix}=\begin{bmatrix}0\\0\\0\\0\end{bmatrix}\]
+  <p>係數矩陣是范德蒙矩陣，\(x\) 值兩兩不同，所以可逆，齊次方程組只有<b>顯然解</b> \((0,0,0,0)\)。</p>
+  <p class="tip">另一個角度：不為零的三次（或更低次）多項式最多只有 3 個根，現在有 4 個根，只能是零多項式。</p>`,
+  why: {1:R`\(p(x)=1+x-x^2-x^3\)，雖然 \(p(1)=0\)，但 \(p(2)=1+2-4-8=-9\neq0\)。`, 2:R`\(p(1)=1+1=2\neq0\)。`, 3:R`\(p(1)=1+1=2\neq0\)。`} },
+
+/* ---------- B ---------- */
+{ sec:'B', topic:'列梯形／列簡梯形', type:'single',
+  stem: R`<p>判斷矩陣是否為列梯形形式（row-echelon form）。如果是，則判斷它是否也是列簡梯形形式（reduced row-echelon form）。</p>\[${aug('1 -9 2 -7;0 1 0 -1;0 0 1 1')}\]`,
+  opts: ['row-echelon form', 'reduced row-echelon form', 'row-echelon form and reduced row-echelon form', '兩者都不是'],
+  ans: [0], wide: true,
+  sol: R`<p><b>列梯形</b>的三個條件：</p>
+  <ol><li>全零列都在最下方</li><li>每個非零列的第一個非零元素（首項）是 1</li><li>下一列的首項 1 在上一列首項的右邊</li></ol>
+  <p>此矩陣首項 1 依序在第 1、2、3 行，呈階梯狀 → 是列梯形。</p>
+  <p><b>列簡梯形</b>還要求：每個首項 1 所在的行，其他元素全為 0。第 2 行的首項上方有 \(-9\)，第 3 行的首項上方有 \(2\) → <b>不是</b>列簡梯形。</p>
+  <p>答案：只是 row-echelon form。</p>`,
+  why: {1:R`首項 1 上方還有 \(-9\) 和 \(2\)，不符合列簡梯形。`, 2:R`首項 1 上方還有 \(-9\) 和 \(2\)，不符合列簡梯形。`, 3:'它已經滿足列梯形的三個條件。'} },
+
+{ sec:'B', topic:'列梯形形式', type:'multi',
+  stem: R`<p>下列哪些矩陣的形式是列梯形形式（row-echelon form）？（複選）</p>`,
+  opts: echelonOpts, ans: [0,1,3],
+  sol: R`<p>逐一檢查列梯形三條件（全零列在下、首項為 1、首項往右下階梯）：</p>
+  <ul><li>(a) 首項 1 在第 1、2、3 行 → ✓</li>
+  <li>(b) 首項 1 在第 1、3、4、5 行，一路往右 → ✓（第 2 行沒有首項沒關係）</li>
+  <li>(c) 第二列的首項是 <b>2</b>，不是 1 → ✗（要先把第二列乘 \(\tfrac12\)）</li>
+  <li>(d) 首項 1 在第 1、2、3 行，全零列在最下面 → ✓（而且還是列簡梯形）</li></ul>`,
+  why: {2:'第二列的首項是 2，課本定義要求首項必須是 1。'} },
+
+{ sec:'B', topic:'列簡梯形形式', type:'single',
+  stem: R`<p>下列哪一個矩陣的形式是列簡梯形形式（reduced row-echelon form）？</p>`,
+  opts: echelonOpts, ans: [3],
+  sol: R`<p>列簡梯形 ＝ 列梯形 ＋ 每個首項 1 所在的那一行，其餘元素全為 0。</p>
+  <ul><li>(a) 第 2 行首項上方有 \(2\)、第 3 行首項上方有 \(-1\) → ✗</li>
+  <li>(b) 第 3 行首項上方有 \(2\)，第 4 行首項上方有 \(-1\)、\(3\) → ✗</li>
+  <li>(c) 第二列首項是 2，連列梯形都不是 → ✗</li>
+  <li>(d) 第 1、2、3 行都只有首項 1，其餘為 0 → ✓</li></ul>
+  <p class="tip">(d) 最後一行的 \(-1,2,3\) 不是首項所在的行，不需要為 0。</p>`,
+  why: {0:R`首項 1 的上方還有非零元素（\(2\)、\(-1\)）。`, 1:R`首項 1 的上方還有非零元素（\(2\)、\(-1\)、\(3\)）。`, 2:'第二列首項是 2，不是列梯形，更不是列簡梯形。'} },
+
+/* ---------- C ---------- */
+{ sec:'C', topic:'矩陣加減', type:'single',
+  stem: R`<p>計算 \(A-B\)。</p>\[A=${m('8 -5;8 -8')},\quad B=${m('-5 9;-2 5')}\]`,
+  opts: [im('13 -14;10 -13'), im('3 4;6 -3'), im('13 -5;8 -13'), im('-50 97;-56 112')],
+  ans: [0],
+  sol: R`<p>對應位置相減：</p>\[A-B=\begin{bmatrix}8-(-5)&-5-9\\8-(-2)&-8-5\end{bmatrix}=${m('13 -14;10 -13')}\]`,
+  why: {1:R`這是 \(A+B\)。`, 2:'右上與左下兩格沒有減掉 B 的對應元素。', 3:'不是逐元素相減的結果。'} },
+
+{ sec:'C', topic:'純量乘法', type:'single',
+  stem: R`<p>計算 \(3C-2D\)。</p>\[C=${m('5 3;1 2')},\quad D=${m('4 2;3 5')}\]`,
+  opts: [im('7 5;9 16'), im('-2 0;-7 -11'), im('7 5;-3 -4'), im('-7 -5;3 6')],
+  ans: [2],
+  sol: R`\[3C=${m('15 9;3 6')},\qquad 2D=${m('8 4;6 10')}\]
+  \[3C-2D=\begin{bmatrix}15-8&9-4\\3-6&6-10\end{bmatrix}=${m('7 5;-3 -4')}\]`,
+  why: {0:'下排做成了相加（3+6、6+10）。', 1:'純量倍數或相減有誤，請逐格重算。', 3:'正負號與數值都不對，請逐格重算。'} },
+
+{ sec:'C', topic:'線性組合', type:'single',
+  stem: R`\[X=${m('4;0;4')},\quad Y=${m('4;4;0')},\quad Z=${m('-12;-24;12')}\]<p>請找出 \(a\) 和 \(b\)，使得 \(Z=aX+bY\)。</p>`,
+  opts: [R`\(a=3;\ b=-6\)`, R`\(a=4;\ b=-12\)`, R`\(a=-6;\ b=-3\)`, R`\(a=12;\ b=-6\)`],
+  ans: [0],
+  sol: R`<p>逐分量比較：</p>
+  <ul><li>第 2 分量：\(0a+4b=-24\Rightarrow b=-6\)</li><li>第 3 分量：\(4a+0b=12\Rightarrow a=3\)</li>
+  <li>第 1 分量驗算：\(4(3)+4(-6)=-12\) ✓</li></ul>`,
+  why: {1:R`第 3 分量：\(4(4)=16\neq12\)。`, 2:R`第 2 分量：\(4(-3)=-12\neq-24\)。`, 3:R`第 3 分量：\(4(12)=48\neq12\)。`} },
+
+{ sec:'C', topic:'矩陣乘法', type:'single',
+  stem: R`<p>計算下列矩陣的乘法</p>\[${m('1 2 -5')}${m('-3;2;-4')}\]`,
+  opts: [im('-3 4 20'), im('-19'), im('21'), im('-3;4;20')],
+  ans: [2],
+  sol: R`<p>\((1\times3)\) 乘 \((3\times1)\) 得 \(1\times1\) 矩陣：</p>\[1(-3)+2(2)+(-5)(-4)=-3+4+20=21\]`,
+  why: {0:'只做了對應元素相乘、沒有相加；而且結果應該是 1×1。', 1:R`符號錯了：\((-5)(-4)=+20\)。`, 3:'只做了對應元素相乘，而且尺寸變成 3×1。'} },
+
+{ sec:'C', topic:'矩陣乘法', type:'single',
+  stem: R`<p>計算 \(CD\)。</p>\[C=${m('5 -4;4 -3')},\quad D=${m('5 3;-1 -2')}\]`,
+  opts: [im('20 -4;16 -3'), im('13;2'), im('29 23;23 18'), im('13 2')],
+  ans: [2],
+  sol: R`<p>第 \((i,j)\) 元素 ＝ \(C\) 的第 \(i\) 列 · \(D\) 的第 \(j\) 行：</p>
+  \[CD=\begin{bmatrix}5(5)+(-4)(-1)&5(3)+(-4)(-2)\\4(5)+(-3)(-1)&4(3)+(-3)(-2)\end{bmatrix}=${m('29 23;23 18')}\]`,
+  why: {0:'不是列×行的內積結果。', 1:'2×2 乘 2×2 的結果仍是 2×2。', 3:'2×2 乘 2×2 的結果仍是 2×2。'} },
+
+{ sec:'C', topic:'矩陣乘冪', type:'single',
+  stem: R`<p>計算 \(A^2\)。</p>\[A=${m('-3 -4;4 5')}\]`,
+  opts: [im('-7 -8;8 9'), im('9 16;16 25'), im('-7 8;-8 9'), im('-3 -8;8 25')],
+  ans: [0],
+  sol: R`\[A^2=AA=\begin{bmatrix}(-3)(-3)+(-4)(4)&(-3)(-4)+(-4)(5)\\4(-3)+5(4)&4(-4)+5(5)\end{bmatrix}=${m('-7 -8;8 9')}\]`,
+  why: {1:R`這是把每個元素平方；矩陣平方要算 \(A\cdot A\)。`, 2:'右上與左下的位置和正負號弄反了。', 3:'只有部分元素有正確計算。'} },
+
+{ sec:'C', topic:'轉置', type:'single',
+  stem: R`<p>計算 \(A^T\)。</p>\[A=${m('2 1 3;3 2 1;3 1 4')}\]`,
+  opts: [im('3 1 4;3 2 1;2 1 3'), im('3 1 2;1 2 3;4 1 3'), im('-2 -1 -3;-3 -2 -1;-3 -1 -4'), im('2 3 3;1 2 1;3 1 4')],
+  ans: [3],
+  sol: R`<p>轉置就是「第 \(i\) 列變成第 \(i\) 行」，\((A^T)_{ij}=a_{ji}\)：</p>\[A^T=${m('2 3 3;1 2 1;3 1 4')}\]`,
+  why: {0:'這是把列的順序上下顛倒。', 1:'這是把每一列左右反轉。', 2:R`這是 \(-A\)，不是轉置。`} },
+
+{ sec:'C', topic:'轉置與乘法', type:'single',
+  stem: R`\[A=${m('2 -2;5 6;0 -3')},\quad\text{計算 }A^TA\]`,
+  opts: [R`\(A^TA=${m('29 -26;34 49')}\)`, R`\(A^TA=${m('29 26;-34 49')}\)`, R`\(A^TA=${m('34 29;49 -26')}\)`, R`\(A^TA=${m('29 26;26 49')}\)`],
+  ans: [3],
+  sol: R`\[A^T=${m('2 5 0;-2 6 -3')}\]
+  <ul><li>\((1,1)\)：\(2^2+5^2+0^2=29\)</li><li>\((1,2)=(2,1)\)：\(2(-2)+5(6)+0(-3)=26\)</li><li>\((2,2)\)：\((-2)^2+6^2+(-3)^2=49\)</li></ul>
+  <p class="tip">秒解技巧：\((A^TA)^T=A^TA\)，所以 \(A^TA\) 一定是<b>對稱矩陣</b>，四個選項只有 (d) 對稱。</p>`,
+  why: {0:R`\(A^TA\) 必為對稱矩陣，右上與左下應相等。`, 1:R`\(A^TA\) 必為對稱矩陣，右上與左下應相等。`, 2:R`\(A^TA\) 必為對稱矩陣，而且對角線元素是平方和，不可能為負。`} },
+
+/* ---------- D ---------- */
+{ sec:'D', topic:'2×2 反矩陣', type:'single',
+  stem: R`<p>求下列矩陣的反矩陣</p>\[${m('5 3;13 8')}\]`,
+  opts: [im('5 3;-13 -8'), im('-3 8;-5 13'), im('-5 13;3 -8'), im('8 -3;-13 5')],
+  ans: [3],
+  sol: R`<p>公式：\(\begin{bmatrix}a&b\\c&d\end{bmatrix}^{-1}=\dfrac{1}{ad-bc}\begin{bmatrix}d&-b\\-c&a\end{bmatrix}\)</p>
+  <p>\(ad-bc=5(8)-3(13)=40-39=1\)，所以</p>\[A^{-1}=${m('8 -3;-13 5')}\]
+  <p>驗算：\(${m('5 3;13 8')}${m('8 -3;-13 5')}=${m('1 0;0 1')}\) ✓</p>`,
+  why: {0:'只是把下排變號，不是反矩陣公式。', 1:R`位置錯了：主對角線 \(a,d\) 要互換，副對角線變號。`, 2:R`位置錯了：主對角線 \(a,d\) 要互換，副對角線變號。`} },
+
+{ sec:'D', topic:'3×3 反矩陣', type:'single',
+  stem: R`<p>求下列矩陣的反矩陣</p>\[${m('0 1 1;1 1 0;0 1 0')}\]`,
+  opts: [im('0 -1 1;1 0 -1;-1 0 -1'), im('0 1 -1;0 0 1;1 0 -1'), im('0 -1 1;0 1 0;-1 0 -1'), im('0 -1 -1;1 0 0;-1 0 -1')],
+  ans: [1],
+  sol: R`<p>用 Gauss–Jordan 消去 \([A\mid I]\)：</p>
+  <div class="math-scroll">\[\left[\begin{array}{ccc|ccc}0&1&1&1&0&0\\1&1&0&0&1&0\\0&1&0&0&0&1\end{array}\right]\xrightarrow{R_1\leftrightarrow R_2}\left[\begin{array}{ccc|ccc}1&1&0&0&1&0\\0&1&1&1&0&0\\0&1&0&0&0&1\end{array}\right]\]</div>
+  <div class="math-scroll">\[\xrightarrow{R_3-R_2,\ -R_3}\left[\begin{array}{ccc|ccc}1&1&0&0&1&0\\0&1&1&1&0&0\\0&0&1&1&0&-1\end{array}\right]\xrightarrow{R_2-R_3,\ R_1-R_2}\left[\begin{array}{ccc|ccc}1&0&0&0&1&-1\\0&1&0&0&0&1\\0&0&1&1&0&-1\end{array}\right]\]</div>
+  <p>所以 \(A^{-1}=${m('0 1 -1;0 0 1;1 0 -1')}\)。驗算 \(AA^{-1}=I\) ✓</p>`,
+  why: {0:R`驗算 \(AA^{-1}\) 的第一列：\([0\ 1\ 1]\) 乘第一行 \((0,1,-1)\) 得 \(0\)，應為 \(1\)。`, 2:R`驗算 \(AA^{-1}\) 的第一列第一行：\([0\ 1\ 1]\cdot(0,0,-1)=-1\neq1\)。`, 3:R`驗算 \(AA^{-1}\) 的第一列第一行：\([0\ 1\ 1]\cdot(0,1,-1)=0\neq1\)。`} },
+
+{ sec:'D', topic:'基本矩陣分解', type:'single',
+  stem: R`<p>下列哪一個選項的乘法運算會得到 \(A\)？</p>\[A=${m('-3 1;2 -1')}\]`,
+  opts: [R`\(${m('1 0;-4 1')}${m('-1 0;3 -1')}${m('1 0;1 -1')}\)`, R`\(${m('-1 -1;0 1')}${m('1 0;-3 0')}${m('1 0;1 0')}\)`, R`\(${m('-1 -1;0 1')}${m('1 0;3 -1')}${m('1 0;1 1')}\)`, R`\(${m('-1 1;0 1')}${m('1 0;3 1')}${m('1 1;0 1')}\)`],
+  ans: [2], wide: true,
+  sol: R`<p>先乘右邊兩個：</p>\[${m('1 0;3 -1')}${m('1 0;1 1')}=${m('1 0;2 -1')}\]
+  <p>再左乘：</p>\[${m('-1 -1;0 1')}${m('1 0;2 -1')}=\begin{bmatrix}-1-2&0+1\\2&-1\end{bmatrix}=${m('-3 1;2 -1')}=A\ ✓\]
+  <p class="tip">快速排除：\(\det A=3-2=1\neq0\)，而 (b) 中間的矩陣行列式為 0，乘積不可能可逆，直接刪掉。</p>`,
+  why: {0:R`乘出來是 \(${m('-1 0;6 1')}\)。`, 1:R`中間矩陣 \(${m('1 0;-3 0')}\) 行列式為 0，乘積不可逆，但 \(\det A=1\)。`, 3:R`乘出來是 \(${m('2 3;3 4')}\)。`} },
+
+{ sec:'D', topic:'可逆矩陣等價條件', type:'multi',
+  stem: R`<p>若 \(A\) 為一 \(n\times n\) 矩陣且可逆，則以下敘述何者正確？（複選）</p>`,
+  opts: [R`對於每一個 \(n\times1\) 的行矩陣 \(b\)，\(Ax=b\) 具有唯一解`, R`\(Ax=0\) 只有顯然解`, R`\(A\) 列等價於 \(I_n\)`, R`\(A\) 可以寫成一些基本矩陣的乘積`],
+  ans: [0,1,2,3], wide: true,
+  sol: R`<p>這四句都是<b>可逆矩陣等價條件定理</b>的內容，彼此互相等價，所以全選。</p>
+  <ul><li>(a) 唯一解就是 \(x=A^{-1}b\)。</li>
+  <li>(b) 取 \(b=0\)：\(x=A^{-1}0=0\)，只有顯然解。</li>
+  <li>(c) 對 \([A\mid I]\) 做 Gauss–Jordan 能把 \(A\) 化成 \(I_n\)，所以 \(A\) 列等價於 \(I_n\)。</li>
+  <li>(d) 把化成 \(I_n\) 的每一步寫成基本矩陣 \(E_k\cdots E_1A=I\)，得 \(A=E_1^{-1}\cdots E_k^{-1}\)，而基本矩陣的反矩陣仍是基本矩陣。</li></ul>`,
+  why: {} }
+];
+
+/* ---------- state ---------- */
+const N = QS.length;
+const per = 100 / N;
+const answers = QS.map(() => new Set());
+const peeked = new Set();
+let submitted = false, shuffled = false, showAll = false, onlyWrong = false;
+let order = QS.map((_, i) => i);
+
+const list = document.getElementById('list');
+const cards = [];
+const esc = s => s;
+
+QS.forEach((q, i) => {
+  const multi = q.type === 'multi';
+  const el = document.createElement('article');
+  el.className = 'q' + (multi ? ' multi-q' : '');
+  el.id = 'q-' + (i + 1);
+  const optsHtml = q.opts.map((o, k) => `
+    <label class="opt" for="q${i}-${k}">
+      <input type="${multi ? 'checkbox' : 'radio'}" name="q${i}" id="q${i}-${k}" value="${k}">
+      <span class="key">(${KEYS[k]})</span><span class="ot">${o}</span>
+    </label>`).join('');
+  el.innerHTML = `
+    <div class="qh"><span class="qn"></span><span class="tag${multi ? ' multi' : ''}">${multi ? '複選' : '單選'}</span><span class="topic">${q.topic}</span><span class="status"></span></div>
+    <div class="stem">${q.stem}</div>
+    <div class="opts${q.wide ? ' wide' : ''}" role="${multi ? 'group' : 'radiogroup'}">${optsHtml}</div>
+    <div class="whyline" hidden></div>
+    <div class="qf"><button type="button" class="reveal" aria-expanded="false">顯示解答與解法</button></div>
+    <div class="sol" hidden>
+      <div class="ans">正確答案：${q.ans.map(k => '(' + KEYS[k] + ')').join('、')}</div>
+      ${q.sol}
+    </div>`;
+  el.querySelectorAll('input').forEach(inp => inp.addEventListener('change', () => {
+    if (submitted) return;
+    const k = +inp.value;
+    if (multi) { inp.checked ? answers[i].add(k) : answers[i].delete(k); }
+    else { answers[i].clear(); answers[i].add(k); }
+    updateProgress();
+  }));
+  el.querySelector('.reveal').addEventListener('click', () => toggleSol(i));
+  cards.push(el);
+});
+
+function toggleSol(i, force) {
+  const el = cards[i];
+  const sol = el.querySelector('.sol');
+  const btn = el.querySelector('.reveal');
+  const open = force !== undefined ? force : sol.hidden;
+  sol.hidden = !open;
+  btn.textContent = open ? '收起解答' : '顯示解答與解法';
+  btn.setAttribute('aria-expanded', String(open));
+  if (open && !submitted && !peeked.has(i)) {
+    peeked.add(i);
+    const st = el.querySelector('.status');
+    st.textContent = '已看解答'; st.classList.add('peek');
+  }
+}
+
+function layout() {
+  list.innerHTML = '';
+  if (shuffled) {
+    order.forEach((idx, n) => { cards[idx].querySelector('.qn').textContent = '第 ' + (n + 1) + ' 題'; list.appendChild(cards[idx]); });
+  } else {
+    let n = 0;
+    SECTIONS.forEach(s => {
+      const idxs = QS.map((q, i) => q.sec === s.id ? i : -1).filter(i => i >= 0);
+      const h = document.createElement('h2');
+      h.className = 'sec-h';
+      h.innerHTML = `${s.name}<span>${idxs.length} 題</span>`;
+      list.appendChild(h);
+      idxs.forEach(i => { n++; cards[i].querySelector('.qn').textContent = '第 ' + n + ' 題'; list.appendChild(cards[i]); });
+    });
+  }
+  applyFilter();
+}
+
+function applyFilter() {
+  cards.forEach((el, i) => {
+    el.hidden = onlyWrong && submitted && isCorrect(i);
+  });
+  list.querySelectorAll('.sec-h').forEach(h => { h.hidden = onlyWrong && submitted; });
+}
+
+const progT = document.getElementById('prog-t');
+const fill = document.getElementById('fill');
+function answeredCount() { return answers.filter(s => s.size > 0).length; }
+function updateProgress() {
+  const c = answeredCount();
+  progT.innerHTML = submitted
+    ? `已交卷 · 得分 <b>${score().toFixed(1)}</b>`
+    : `已作答 <b>${c}</b> / ${N}`;
+  fill.style.width = (submitted ? 100 : c / N * 100) + '%';
+}
+
+function isCorrect(i) {
+  const a = answers[i], t = QS[i].ans;
+  return a.size === t.length && t.every(k => a.has(k));
+}
+function score() { return QS.reduce((s, _, i) => s + (isCorrect(i) ? per : 0), 0); }
+
+function typeset(els) {
+  if (window.MathJax && MathJax.typesetPromise) MathJax.typesetPromise(els).catch(() => {});
+}
+
+function cardNo(i) { return cards[i].querySelector('.qn').textContent.replace(/[^0-9]/g, ''); }
+
+function grade() {
+  submitted = true;
+  const wrong = [], skip = [];
+  QS.forEach((q, i) => {
+    const el = cards[i];
+    el.classList.add('locked');
+    el.querySelectorAll('input').forEach(inp => inp.disabled = true);
+    const a = answers[i];
+    const ok = isCorrect(i);
+    const st = el.querySelector('.status');
+    st.classList.remove('peek');
+    el.classList.remove('st-ok', 'st-bad', 'st-skip');
+    el.querySelectorAll('.opt').forEach((lab, k) => {
+      const isAns = q.ans.includes(k), picked = a.has(k);
+      if (isAns) lab.classList.add('is-correct');
+      if (isAns && !picked && a.size && q.type === 'multi') lab.classList.add('is-missed');
+      if (!isAns && picked) lab.classList.add('is-wrong');
+    });
+    const wl = el.querySelector('.whyline');
+    if (ok) {
+      el.classList.add('st-ok'); st.textContent = peeked.has(i) ? '答對 · 看過解答' : '答對';
+      toggleSol(i, showAll);
+      wl.hidden = true;
+    } else if (a.size === 0) {
+      el.classList.add('st-skip'); st.textContent = '未作答'; skip.push(i);
+      toggleSol(i, true); wl.hidden = true;
+    } else {
+      el.classList.add('st-bad'); st.textContent = peeked.has(i) ? '答錯 · 看過解答' : '答錯'; wrong.push(i);
+      const lines = [];
+      [...a].sort().forEach(k => {
+        if (!q.ans.includes(k)) lines.push(`<div><b>你選的 (${KEYS[k]}) 錯在：</b>${(q.why && q.why[k]) || '這個選項不符合題目條件，請看下方詳解。'}</div>`);
+      });
+      if (q.type === 'multi') q.ans.forEach(k => { if (!a.has(k)) lines.push(`<div><b>漏選 (${KEYS[k]})：</b>這也是正確選項。</div>`); });
+      else lines.push(`<div><b>正確答案是 (${KEYS[q.ans[0]]})</b>，解法見下方。</div>`);
+      wl.innerHTML = lines.join('');
+      wl.hidden = false;
+      toggleSol(i, true);
+      typeset([wl]);
+    }
+  });
+  renderResult(wrong, skip);
+  updateProgress();
+  applyFilter();
+}
+
+const result = document.getElementById('result');
+function renderResult(wrong, skip) {
+  const ok = N - wrong.length - skip.length;
+  const sc = score();
+  const byNo = arr => arr.slice().sort((x, y) => cardNo(x) - cardNo(y));
+  const chip = (i, cls) => `<button type="button" class="chip${cls}" data-i="${i}">第 ${cardNo(i)} 題</button>`;
+  result.innerHTML = `
+    <div class="score-row">
+      <div class="score">${sc.toFixed(1)}<small>/ 100 分</small></div>
+      <div class="tally">
+        <div class="t-ok"><b>${ok}</b><span>答對</span></div>
+        <div class="t-bad"><b>${wrong.length}</b><span>答錯</span></div>
+        <div class="t-skip"><b>${skip.length}</b><span>未作答</span></div>
+        <div><b>${peeked.size}</b><span>交卷前看過解答</span></div>
+      </div>
+    </div>
+    ${wrong.length ? `<div><p class="res-label">答錯的題目（點擊跳到該題，詳解已展開）</p><div class="chips">${byNo(wrong).map(i => chip(i, '')).join('')}</div></div>` : ''}
+    ${skip.length ? `<div><p class="res-label">未作答</p><div class="chips">${byNo(skip).map(i => chip(i, ' skip')).join('')}</div></div>` : ''}
+    ${!wrong.length && !skip.length ? '<p class="note">全部答對！</p>' : ''}
+    <div class="res-actions">
+      <button type="button" class="btn" id="btn-onlywrong" aria-pressed="${onlyWrong}">只顯示錯題與未作答</button>
+      <button type="button" class="btn" id="btn-retry">重新作答</button>
+    </div>
+    <p class="note">計分方式：每題 ${per.toFixed(2)} 分，複選題需完全答對才給分（實際考試的部分給分規則可能不同）。</p>`;
+  result.hidden = false;
+  result.querySelectorAll('.chip').forEach(c => c.addEventListener('click', () => {
+    const el = cards[+c.dataset.i];
+    if (el.hidden) { onlyWrong = false; applyFilter(); }
+    el.scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'start' });
+  }));
+  document.getElementById('btn-onlywrong').addEventListener('click', e => {
+    onlyWrong = !onlyWrong; e.currentTarget.setAttribute('aria-pressed', String(onlyWrong)); applyFilter();
+  });
+  document.getElementById('btn-retry').addEventListener('click', reset);
+  result.scrollIntoView({ block: 'start' });
+}
+
+function reset() {
+  submitted = false; onlyWrong = false;
+  answers.forEach(s => s.clear()); peeked.clear();
+  cards.forEach((el, i) => {
+    el.classList.remove('locked', 'st-ok', 'st-bad', 'st-skip');
+    el.querySelectorAll('input').forEach(inp => { inp.disabled = false; inp.checked = false; });
+    el.querySelectorAll('.opt').forEach(l => l.classList.remove('is-correct', 'is-wrong', 'is-missed'));
+    const st = el.querySelector('.status'); st.textContent = ''; st.classList.remove('peek');
+    el.querySelector('.whyline').hidden = true;
+    toggleSol(i, false);
+  });
+  showAll = false; document.getElementById('btn-all').setAttribute('aria-pressed', 'false');
+  result.hidden = true; result.innerHTML = '';
+  if (shuffled) order = shuffle(order);
+  hideConfirm();
+  submitBtn.textContent = '交卷';
+  layout(); updateProgress();
+  window.scrollTo({ top: 0 });
+}
+
+function shuffle(a) { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; }
+
+/* controls */
+document.getElementById('btn-shuffle').addEventListener('click', e => {
+  shuffled = !shuffled;
+  e.currentTarget.setAttribute('aria-pressed', String(shuffled));
+  e.currentTarget.textContent = shuffled ? '隨機題序（開）' : '隨機題序';
+  if (shuffled) order = shuffle(QS.map((_, i) => i));
+  layout();
+});
+document.getElementById('btn-all').addEventListener('click', e => {
+  showAll = !showAll;
+  e.currentTarget.setAttribute('aria-pressed', String(showAll));
+  cards.forEach((_, i) => toggleSol(i, showAll || (submitted && !isCorrect(i))));
+});
+document.getElementById('btn-reset').addEventListener('click', reset);
+
+const confirmBox = document.getElementById('confirm');
+const submitBtn = document.getElementById('btn-submit');
+function hideConfirm() { confirmBox.hidden = true; confirmBox.innerHTML = ''; submitBtn.hidden = false; }
+submitBtn.addEventListener('click', () => {
+  if (submitted) { result.scrollIntoView({ block: 'start' }); return; }
+  const left = N - answeredCount();
+  if (left > 0) {
+    confirmBox.innerHTML = `<span>還有 <b>${left}</b> 題未作答</span><button type="button" class="btn primary" id="c-yes">仍要交卷</button><button type="button" class="btn" id="c-no">繼續作答</button>`;
+    confirmBox.hidden = false; submitBtn.hidden = true;
+    document.getElementById('c-yes').addEventListener('click', () => { hideConfirm(); doSubmit(); });
+    document.getElementById('c-no').addEventListener('click', hideConfirm);
+    return;
+  }
+  doSubmit();
+});
+function doSubmit() { grade(); submitBtn.textContent = '查看成績'; }
+
+layout();
+updateProgress();
+})();
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-svg.js" async></script>
+
+</body></html>
